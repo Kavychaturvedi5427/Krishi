@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,11 +43,49 @@
       max-width: 420px;
       padding: 2rem;
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       text-align: center;
       border: 1px solid var(--border);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
       position: relative;
+      overflow: visible;
+      z-index: 1;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
+
+    /*  Soft eco-glow behind the border edges */
+    .register-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: linear-gradient(135deg,
+          rgba(46, 125, 50, 0.25),
+          /* eco green */
+          rgba(163, 230, 53, 0.25),
+          /* lime green */
+          rgba(255, 193, 7, 0.25)
+          /* sunlight yellow */
+        );
+      z-index: -1;
+      filter: blur(25px);
+      opacity: 0.6;
+      transform: scale(1.05);
+      transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    }
+
+    /*  Smoothly brighten & lift glow on hover */
+    .register-container:hover::before {
+      opacity: 1;
+      filter: blur(35px);
+      transform: scale(1.07);
+    }
+
+    .register-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+
 
     .language-selector {
       position: absolute;
@@ -109,7 +148,8 @@
       margin-bottom: 0.3rem;
     }
 
-    .input-group input, .input-group select {
+    .input-group input,
+    .input-group select {
       width: 100%;
       padding: 0.6rem;
       border: 1px solid var(--border);
@@ -117,10 +157,11 @@
       font-size: 0.9rem;
     }
 
-    .input-group input:focus, .input-group select:focus {
+    .input-group input:focus,
+    .input-group select:focus {
       outline: none;
       border-color: var(--primary-green);
-      box-shadow: 0 0 5px rgba(46,125,50,0.3);
+      box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
     }
 
     .show-pass {
@@ -137,9 +178,17 @@
       display: none;
     }
 
-    .strength-weak { color: #f44336; }
-    .strength-medium { color: #ff9800; }
-    .strength-strong { color: #4caf50; }
+    .strength-weak {
+      color: #f44336;
+    }
+
+    .strength-medium {
+      color: #ff9800;
+    }
+
+    .strength-strong {
+      color: #4caf50;
+    }
 
     .password-tips {
       background: #f5f5f5;
@@ -212,13 +261,16 @@
         padding: 1.5rem;
         margin: 10px;
       }
+
       .logo {
         width: 70px;
         height: 70px;
       }
+
       .welcome-main {
         font-size: 1.1rem;
       }
+
       h2 {
         font-size: 1.2rem;
       }
@@ -228,13 +280,16 @@
       .register-container {
         padding: 1.2rem;
       }
-      .input-group input, .input-group select {
+
+      .input-group input,
+      .input-group select {
         padding: 0.5rem;
         font-size: 0.85rem;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="register-container">
     <div class="language-selector">
@@ -398,24 +453,24 @@
       const password = document.getElementById('password').value;
       const strengthDiv = document.getElementById('password-strength');
       const tipsDiv = document.getElementById('password-tips');
-      
+
       if (password.length === 0) {
         strengthDiv.style.display = 'none';
         tipsDiv.style.display = 'none';
         return;
       }
-      
+
       strengthDiv.style.display = 'block';
       tipsDiv.style.display = 'block';
-      
+
       let score = 0;
-      
+
       if (password.length >= 8) score++;
       if (/[A-Z]/.test(password)) score++;
       if (/[a-z]/.test(password)) score++;
       if (/\d/.test(password)) score++;
       if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
-      
+
       if (score < 3) {
         strengthDiv.textContent = 'Weak password - Add more characters for better security';
         strengthDiv.className = 'password-strength strength-weak';
@@ -438,27 +493,27 @@
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
       const terms = document.getElementById('terms').checked;
-      
+
       if (!fullname || !email || !phone || !usertype || !username || !password || !confirmPassword) {
         alert('Please fill in all fields');
         return;
       }
-      
+
       if (password !== confirmPassword) {
         alert('Passwords do not match');
         return;
       }
-      
+
       if (password.length < 8) {
         alert('Password must be at least 8 characters long for better security');
         return;
       }
-      
+
       if (!terms) {
         alert('Please accept the terms and conditions');
         return;
       }
-      
+
       // Store user data in localStorage
       const userData = {
         fullname,
@@ -469,29 +524,30 @@
         password,
         registrationDate: new Date().toISOString()
       };
-      
+
       // Get existing users or create new array
       let users = JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]');
-      
+
       // Check if username already exists
       if (users.find(user => user.username === username)) {
         alert('Username already exists. Please choose a different username.');
         return;
       }
-      
+
       // Add new user
       users.push(userData);
       localStorage.setItem('kisanSetuUsers', JSON.stringify(users));
-      
+
       alert('Registration successful! Please login with your credentials.');
       window.location.href = 'login.html';
     }
 
-    document.addEventListener('keypress', function(e) {
+    document.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         handleRegister();
       }
     });
   </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,15 +37,52 @@
     }
 
     .login-container {
-      background-color: var(--white);
+      background-color: #ffffff;
       width: 360px;
       padding: 2.5rem;
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       text-align: center;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      overflow: visible;
     }
+
+    /* ✨ Soft eco-glow behind the border edges */
+    .login-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: linear-gradient(135deg,
+          rgba(46, 204, 113, 0.25),
+          /* soft green */
+          rgba(163, 230, 53, 0.25),
+          /* lime/yellow-green */
+          rgba(129, 199, 132, 0.25)
+          /* mint tone */
+        );
+      z-index: -1;
+      filter: blur(25px);
+      opacity: 0.6;
+      transform: scale(1.05);
+      transition: opacity 0.6s ease, filter 0.6s ease;
+    }
+
+    /* 🌿 Slightly brighten the glow on hover */
+    .login-container:hover::before {
+      opacity: 1;
+      filter: blur(35px);
+    }
+
+    .login-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+
 
     .language-selector {
       position: absolute;
@@ -117,7 +155,7 @@
     .input-group input:focus {
       outline: none;
       border-color: var(--primary-green);
-      box-shadow: 0 0 5px rgba(46,125,50,0.3);
+      box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
     }
 
     .show-pass {
@@ -190,6 +228,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <div class="language-selector">
@@ -230,228 +269,230 @@
 
     <footer id="footer-text">
       © 2025 Kisan Setu | Empowering Farmers<br>
-      <a href="database-viewer.html" style="color: var(--secondary-orange); font-size: 0.8rem; text-decoration: none;">🔍 View Database</a>
+      <a href="database-viewer.html"
+        style="color: var(--secondary-orange); font-size: 0.8rem; text-decoration: none;">🔍 View Database</a>
     </footer>
   </div>
 
   <script>
-  // 🌐 Language switch
-  function changeLanguage() {
-    const lang = document.getElementById("language").value;
-    const text = {
-      en: {
-        welcome: "WELCOME",
-        tagline: "AI-Powered Agricultural Intelligence Platform",
-        login: "KISAN SETU LOGIN",
-        username: "Username",
-        password: "Password",
-        remember: "Remember Me",
-        loginBtn: "Login",
-        forgot: "Forgot Password?",
-        create: "Create New Account",
-        footer: "© 2025 Kisan Setu | Empowering Farmers"
-      },
-      hi: {
-        welcome: "स्वागत है",
-        tagline: "एआई संचालित कृषि बुद्धिमत्ता मंच",
-        login: "किसान सेतु लॉगिन",
-        username: "उपयोगकर्ता नाम",
-        password: "पासवर्ड",
-        remember: "मुझे याद रखें",
-        loginBtn: "लॉगिन करें",
-        forgot: "पासवर्ड भूल गए?",
-        create: "नया खाता बनाएं",
-        footer: "© 2025 किसान सेतु | किसानों को सशक्त बनाना"
-      }
-    };
-    const t = text[lang];
-    document.getElementById("welcome-main").innerText = t.welcome;
-    document.getElementById("tagline").innerText = t.tagline;
-    document.getElementById("login-title").innerText = t.login;
-    document.getElementById("username-label").innerText = t.username;
-    document.getElementById("password-label").innerText = t.password;
-    document.getElementById("remember-text").innerText = t.remember;
-    document.getElementById("login-btn").innerText = t.loginBtn;
-    document.getElementById("forgot-link").innerText = t.forgot;
-    document.getElementById("create-link").innerText = t.create;
-    document.getElementById("footer-text").innerText = t.footer;
-  }
-
-  // 👁️ Toggle password visibility
-  function togglePassword() {
-    const pass = document.getElementById("password");
-    const icon = document.getElementById("togglePass");
-    if (pass.type === "password") {
-      pass.type = "text";
-      icon.classList.replace("fa-eye", "fa-eye-slash");
-    } else {
-      pass.type = "password";
-      icon.classList.replace("fa-eye-slash", "fa-eye");
-    }
-  }
-
-  // 🔐 Login with registration data integration
-  function handleLogin() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (!username || !password) {
-      alert('Please enter both username and password');
-      return;
-    }
-
-    // Check against registered users
-    const users = JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]');
-    const user = users.find(u => u.username === username && u.password === password);
-    
-    if (user) {
-      alert('Login successful!');
-      
-      // Store current user session
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      
-      // Track login in database
-      trackUserLogin(user);
-      
-      // Redirect based on user type
-      if (user.usertype === 'farmer') {
-        window.location.href = 'farmer-dashboard.html';
-      } else {
-        window.location.href = 'farmer-dashboard.html'; // All users go to farmer dashboard for now
-      }
-    } else {
-      // Demo credentials for testing
-      if (username === 'admin' && password === 'password') {
-        alert('Login successful!');
-        const adminUser = {
-          fullname: 'Admin User',
-          username: 'admin',
-          usertype: 'farmer'
-        };
-        localStorage.setItem('currentUser', JSON.stringify(adminUser));
-        
-        // Track admin login
-        trackUserLogin(adminUser);
-        
-        window.location.href = 'farmer-dashboard.html';
-      } else {
-        alert('Invalid credentials. Please register first or use admin/password for demo.');
-      }
-    }
-  }
-
-  // 📊 Track user login sessions
-  function trackUserLogin(user) {
-    const loginSession = {
-      username: user.username,
-      fullname: user.fullname,
-      usertype: user.usertype,
-      loginTime: new Date().toISOString(),
-      sessionId: generateSessionId(),
-      ipAddress: 'localhost', // In real app, get actual IP
-      userAgent: navigator.userAgent
-    };
-    
-    // Get existing login history or create new array
-    let loginHistory = JSON.parse(localStorage.getItem('kisanSetuLoginHistory') || '[]');
-    
-    // Add new login session
-    loginHistory.push(loginSession);
-    
-    // Keep only last 100 login records to prevent storage overflow
-    if (loginHistory.length > 100) {
-      loginHistory = loginHistory.slice(-100);
-    }
-    
-    // Store updated login history
-    localStorage.setItem('kisanSetuLoginHistory', JSON.stringify(loginHistory));
-    
-    // Update user statistics
-    updateUserStats(user.username);
-  }
-  
-  // 🔢 Generate unique session ID
-  function generateSessionId() {
-    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  }
-  
-  // 📈 Update user login statistics
-  function updateUserStats(username) {
-    let userStats = JSON.parse(localStorage.getItem('kisanSetuUserStats') || '{}');
-    
-    if (!userStats[username]) {
-      userStats[username] = {
-        totalLogins: 0,
-        firstLogin: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
+    // 🌐 Language switch
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      const text = {
+        en: {
+          welcome: "WELCOME",
+          tagline: "AI-Powered Agricultural Intelligence Platform",
+          login: "KISAN SETU LOGIN",
+          username: "Username",
+          password: "Password",
+          remember: "Remember Me",
+          loginBtn: "Login",
+          forgot: "Forgot Password?",
+          create: "Create New Account",
+          footer: "© 2025 Kisan Setu | Empowering Farmers"
+        },
+        hi: {
+          welcome: "स्वागत है",
+          tagline: "एआई संचालित कृषि बुद्धिमत्ता मंच",
+          login: "किसान सेतु लॉगिन",
+          username: "उपयोगकर्ता नाम",
+          password: "पासवर्ड",
+          remember: "मुझे याद रखें",
+          loginBtn: "लॉगिन करें",
+          forgot: "पासवर्ड भूल गए?",
+          create: "नया खाता बनाएं",
+          footer: "© 2025 किसान सेतु | किसानों को सशक्त बनाना"
+        }
       };
+      const t = text[lang];
+      document.getElementById("welcome-main").innerText = t.welcome;
+      document.getElementById("tagline").innerText = t.tagline;
+      document.getElementById("login-title").innerText = t.login;
+      document.getElementById("username-label").innerText = t.username;
+      document.getElementById("password-label").innerText = t.password;
+      document.getElementById("remember-text").innerText = t.remember;
+      document.getElementById("login-btn").innerText = t.loginBtn;
+      document.getElementById("forgot-link").innerText = t.forgot;
+      document.getElementById("create-link").innerText = t.create;
+      document.getElementById("footer-text").innerText = t.footer;
     }
-    
-    userStats[username].totalLogins++;
-    userStats[username].lastLogin = new Date().toISOString();
-    
-    localStorage.setItem('kisanSetuUserStats', JSON.stringify(userStats));
-  }
 
-  // ⌨️ Enter key to login
-  document.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') handleLogin();
-  });
+    // 👁️ Toggle password visibility
+    function togglePassword() {
+      const pass = document.getElementById("password");
+      const icon = document.getElementById("togglePass");
+      if (pass.type === "password") {
+        pass.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        pass.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    }
 
-  // 📱 Fluid, modern JavaScript responsiveness
-  function makeResponsive() {
-    const width = window.innerWidth;
-    const container = document.querySelector('.login-container');
-    const logo = document.querySelector('.logo');
-    const mainText = document.querySelector('.welcome-main');
-    const tagline = document.querySelector('.welcome');
-    const title = document.querySelector('h2');
-    const inputs = document.querySelectorAll('.input-group input');
-    const button = document.querySelector('.login-btn');
+    // 🔐 Login with registration data integration
+    function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-    // Scale factor (1 = desktop base)
-    let scale = Math.max(0.7, Math.min(width / 1440, 1.1));
+      if (!username || !password) {
+        alert('Please enter both username and password');
+        return;
+      }
 
-    // Container adjustments
-    container.style.width = `${360 * scale}px`;
-    container.style.padding = `${2.5 * scale}rem`;
-    container.style.borderRadius = `${20 * scale}px`;
-    container.style.boxShadow = `0 ${8 * scale}px ${20 * scale}px rgba(0,0,0,0.1)`;
+      // Check against registered users
+      const users = JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]');
+      const user = users.find(u => u.username === username && u.password === password);
 
-    // Logo scaling
-    logo.style.width = `${120 * scale}px`;
-    logo.style.height = `${120 * scale}px`;
-    logo.style.marginBottom = `${1.2 * scale}rem`;
+      if (user) {
+        alert('Login successful!');
 
-    // Typography
-    mainText.style.fontSize = `${1.4 * scale}rem`;
-    tagline.style.fontSize = `${0.9 * scale}rem`;
-    title.style.fontSize = `${1.5 * scale}rem`;
+        // Store current user session
+        localStorage.setItem('currentUser', JSON.stringify(user));
 
-    // Inputs & button
-    inputs.forEach(inp => {
-      inp.style.padding = `${0.7 * scale}rem`;
-      inp.style.fontSize = `${1 * scale}rem`;
-      inp.style.borderRadius = `${8 * scale}px`;
+        // Track login in database
+        trackUserLogin(user);
+
+        // Redirect based on user type
+        if (user.usertype === 'farmer') {
+          window.location.href = 'farmer-dashboard.html';
+        } else {
+          window.location.href = 'farmer-dashboard.html'; // All users go to farmer dashboard for now
+        }
+      } else {
+        // Demo credentials for testing
+        if (username === 'admin' && password === 'password') {
+          alert('Login successful!');
+          const adminUser = {
+            fullname: 'Admin User',
+            username: 'admin',
+            usertype: 'farmer'
+          };
+          localStorage.setItem('currentUser', JSON.stringify(adminUser));
+
+          // Track admin login
+          trackUserLogin(adminUser);
+
+          window.location.href = 'farmer-dashboard.html';
+        } else {
+          alert('Invalid credentials. Please register first or use admin/password for demo.');
+        }
+      }
+    }
+
+    // 📊 Track user login sessions
+    function trackUserLogin(user) {
+      const loginSession = {
+        username: user.username,
+        fullname: user.fullname,
+        usertype: user.usertype,
+        loginTime: new Date().toISOString(),
+        sessionId: generateSessionId(),
+        ipAddress: 'localhost', // In real app, get actual IP
+        userAgent: navigator.userAgent
+      };
+
+      // Get existing login history or create new array
+      let loginHistory = JSON.parse(localStorage.getItem('kisanSetuLoginHistory') || '[]');
+
+      // Add new login session
+      loginHistory.push(loginSession);
+
+      // Keep only last 100 login records to prevent storage overflow
+      if (loginHistory.length > 100) {
+        loginHistory = loginHistory.slice(-100);
+      }
+
+      // Store updated login history
+      localStorage.setItem('kisanSetuLoginHistory', JSON.stringify(loginHistory));
+
+      // Update user statistics
+      updateUserStats(user.username);
+    }
+
+    // 🔢 Generate unique session ID
+    function generateSessionId() {
+      return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // 📈 Update user login statistics
+    function updateUserStats(username) {
+      let userStats = JSON.parse(localStorage.getItem('kisanSetuUserStats') || '{}');
+
+      if (!userStats[username]) {
+        userStats[username] = {
+          totalLogins: 0,
+          firstLogin: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        };
+      }
+
+      userStats[username].totalLogins++;
+      userStats[username].lastLogin = new Date().toISOString();
+
+      localStorage.setItem('kisanSetuUserStats', JSON.stringify(userStats));
+    }
+
+    // ⌨️ Enter key to login
+    document.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') handleLogin();
     });
 
-    button.style.padding = `${0.8 * scale}rem`;
-    button.style.fontSize = `${1 * scale}rem`;
-    button.style.borderRadius = `${10 * scale}px`;
+    // 📱 Fluid, modern JavaScript responsiveness
+    function makeResponsive() {
+      const width = window.innerWidth;
+      const container = document.querySelector('.login-container');
+      const logo = document.querySelector('.logo');
+      const mainText = document.querySelector('.welcome-main');
+      const tagline = document.querySelector('.welcome');
+      const title = document.querySelector('h2');
+      const inputs = document.querySelectorAll('.input-group input');
+      const button = document.querySelector('.login-btn');
 
-    // Adjust for very small screens
-    if (width < 400) {
-      document.body.style.padding = "1rem";
-      container.style.width = "90%";
-    } else {
-      document.body.style.padding = "0";
+      // Scale factor (1 = desktop base)
+      let scale = Math.max(0.7, Math.min(width / 1440, 1.1));
+
+      // Container adjustments
+      container.style.width = `${360 * scale}px`;
+      container.style.padding = `${2.5 * scale}rem`;
+      container.style.borderRadius = `${20 * scale}px`;
+      container.style.boxShadow = `0 ${8 * scale}px ${20 * scale}px rgba(0,0,0,0.1)`;
+
+      // Logo scaling
+      logo.style.width = `${120 * scale}px`;
+      logo.style.height = `${120 * scale}px`;
+      logo.style.marginBottom = `${1.2 * scale}rem`;
+
+      // Typography
+      mainText.style.fontSize = `${1.4 * scale}rem`;
+      tagline.style.fontSize = `${0.9 * scale}rem`;
+      title.style.fontSize = `${1.5 * scale}rem`;
+
+      // Inputs & button
+      inputs.forEach(inp => {
+        inp.style.padding = `${0.7 * scale}rem`;
+        inp.style.fontSize = `${1 * scale}rem`;
+        inp.style.borderRadius = `${8 * scale}px`;
+      });
+
+      button.style.padding = `${0.8 * scale}rem`;
+      button.style.fontSize = `${1 * scale}rem`;
+      button.style.borderRadius = `${10 * scale}px`;
+
+      // Adjust for very small screens
+      if (width < 400) {
+        document.body.style.padding = "1rem";
+        container.style.width = "90%";
+      } else {
+        document.body.style.padding = "0";
+      }
     }
-  }
 
-  // Run on load and resize
-  window.addEventListener('load', makeResponsive);
-  window.addEventListener('resize', makeResponsive);
-</script>
+    // Run on load and resize
+    window.addEventListener('load', makeResponsive);
+    window.addEventListener('resize', makeResponsive);
+  </script>
 
 </body>
+
 </html>
