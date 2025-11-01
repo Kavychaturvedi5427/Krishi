@@ -233,19 +233,23 @@
   <header class="header">
     <div class="header-left">
       <img src="src/assets/images/Kisansetu.png" alt="Kisan Setu Logo" class="logo">
-      <h1>Kisan Setu Marketplace</h1>
+      <h1 id="title">Kisan Setu Marketplace</h1>
     </div>
 
     <div class="header-right">
-      <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
-      <input type="text" placeholder="Search products..." class="search-bar">
-      <select class="filter-sort">
-        <option>Filters + Sort</option>
-        <option>Price: Low to High</option>
-        <option>Price: High to Low</option>
-        <option>Newest</option>
+      <select id="language" onchange="changeLanguage()" style="margin-right: 10px; padding: 8px; border-radius: 6px; border: 2px solid var(--green);">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
       </select>
-      <button class="marketplace-btn">Marketplace</button>
+      <button class="back-btn" onclick="goBack()" id="back-btn">← Back to Dashboard</button>
+      <input type="text" placeholder="Search products..." class="search-bar" id="search-bar">
+      <select class="filter-sort" id="filter-sort">
+        <option id="filter-option">Filters + Sort</option>
+        <option id="price-low">Price: Low to High</option>
+        <option id="price-high">Price: High to Low</option>
+        <option id="newest">Newest</option>
+      </select>
+      <button class="marketplace-btn" id="marketplace-btn">Marketplace</button>
     </div>
   </header>
 
@@ -253,106 +257,253 @@
   <main class="main-container">
     <!-- LEFT FILTER SIDEBAR -->
     <aside class="sidebar">
-      <h3>Filters</h3>
+      <h3 id="filters-title">Filters</h3>
       <ul>
-        <li><input type="checkbox"> Category</li>
-        <li><input type="checkbox"> Price</li>
-        <li><input type="checkbox"> Distance</li>
-        <li><input type="checkbox"> Organic</li>
-        <li><input type="checkbox"> Rating</li>
+        <li><input type="checkbox"> <span id="category">Category</span></li>
+        <li><input type="checkbox"> <span id="price">Price</span></li>
+        <li><input type="checkbox"> <span id="distance">Distance</span></li>
+        <li><input type="checkbox"> <span id="organic">Organic</span></li>
+        <li><input type="checkbox"> <span id="rating">Rating</span></li>
       </ul>
     </aside>
 
     <!-- PRODUCT GRID -->
     <section class="product-grid">
       <div class="product-card">
-        <img src="src/assets/images/OIP.jpeg.jpg" alt="Product">
-        <h4>Organic Fertilizer</h4>
-        <p>₹250 / 5kg</p>
-        <button onclick="addToCart('Organic Fertilizer', 250)">Add to Cart</button>
+        <img src="src/assets/images/OIP.jpeg.jpg" alt="Organic Fertilizer">
+        <h4 id="product1-name">Organic Fertilizer</h4>
+        <p id="product1-price">₹250 / 5kg</p>
+        <button onclick="addToCart('Organic Fertilizer', 250)" id="product1-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/seeds.jpeg.jpg" alt="Product">
-        <h4>Hybrid Seeds</h4>
-        <p>₹120 / pack</p>
-        <button onclick="addToCart('Hybrid Seeds', 120)">Add to Cart</button>
+        <img src="src/assets/images/seeds.jpeg.jpg" alt="Hybrid Seeds">
+        <h4 id="product2-name">Hybrid Seeds</h4>
+        <p id="product2-price">₹120 / pack</p>
+        <button onclick="addToCart('Hybrid Seeds', 120)" id="product2-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/dripirrigation.jpeg.jpg" alt="Product">
-        <h4>Drip Irrigation Kit</h4>
-        <p>₹1,299</p>
-        <button onclick="addToCart('Drip Irrigation Kit', 1299)">Add to Cart</button>
+        <img src="src/assets/images/dripirrigation.jpeg.jpg" alt="Drip Irrigation Kit">
+        <h4 id="product3-name">Drip Irrigation Kit</h4>
+        <p id="product3-price">₹1,299</p>
+        <button onclick="addToCart('Drip Irrigation Kit', 1299)" id="product3-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/tractorrental.jpeg" alt="Product">
-        <h4>Tractor Rental</h4>
-        <p>₹499 / hour</p>
-        <button onclick="addToCart('Tractor Rental', 499)">Add to Cart</button>
+        <img src="src/assets/images/tractorrental.jpeg.jpg" alt="Tractor Rental">
+        <h4 id="product4-name">Tractor Rental</h4>
+        <p id="product4-price">₹499 / hour</p>
+        <button onclick="addToCart('Tractor Rental', 499)" id="product4-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/compostbag.jpeg" alt="Product">
-        <h4>Compost</h4>
-        <p>₹299 / bag</p>
-        <button onclick="addToCart('Compost', 299)">Add to Cart</button>
+        <img src="src/assets/images/compostbag.jpeg.jpg" alt="Compost">
+        <h4 id="product5-name">Compost</h4>
+        <p id="product5-price">₹299 / bag</p>
+        <button onclick="addToCart('Compost', 299)" id="product5-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/fertilizer.jpeg.jpg" alt="Product">
-        <h4>Fertilizer Sprayer</h4>
-        <p>₹899</p>
-        <button onclick="addToCart('Fertilizer Sprayer', 899)">Add to Cart</button>
+        <img src="src/assets/images/fertilizer.jpeg.jpg" alt="Fertilizer Sprayer">
+        <h4 id="product6-name">Fertilizer Sprayer</h4>
+        <p id="product6-price">₹899</p>
+        <button onclick="addToCart('Fertilizer Sprayer', 899)" id="product6-btn">Add to Cart</button>
       </div>
 
       <!-- ADDITIONAL FOUR PRODUCTS -->
       <div class="product-card">
-        <img src="src/assets/images/wateringcan.jpeg" alt="Product">
-        <h4>Watering Can</h4>
-        <p>₹199</p>
-        <button onclick="addToCart('Watering Can', 199)">Add to Cart</button>
+        <img src="src/assets/images/wateringcan.jpeg.jpg" alt="Watering Can">
+        <h4 id="product7-name">Watering Can</h4>
+        <p id="product7-price">₹199</p>
+        <button onclick="addToCart('Watering Can', 199)" id="product7-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/naturalpesticides.jpg" alt="Product">
-        <h4>Natural Pesticide</h4>
-        <p>₹349 / litre</p>
-        <button onclick="addToCart('Natural Pesticide', 349)">Add to Cart</button>
+        <img src="src/assets/images/naturalpesticides.jpg" alt="Natural Pesticide">
+        <h4 id="product8-name">Natural Pesticide</h4>
+        <p id="product8-price">₹349 / litre</p>
+        <button onclick="addToCart('Natural Pesticide', 349)" id="product8-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/soiltester.jpeg" alt="Product">
-        <h4>Soil Tester Kit</h4>
-        <p>₹599</p>
-        <button onclick="addToCart('Soil Tester Kit', 599)">Add to Cart</button>
+        <img src="src/assets/images/soiltesterkit.jpeg.jpg" alt="Soil Tester Kit">
+        <h4 id="product9-name">Soil Tester Kit</h4>
+        <p id="product9-price">₹599</p>
+        <button onclick="addToCart('Soil Tester Kit', 599)" id="product9-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="src/assets/images/greenhouse.jpeg" alt="Product">
-        <h4>Mini Greenhouse</h4>
-        <p>₹2,499</p>
-        <button onclick="addToCart('Mini Greenhouse', 2499)">Add to Cart</button>
+        <img src="src/assets/images/minigreenhouse.jpeg.jpg" alt="Mini Greenhouse">
+        <h4 id="product10-name">Mini Greenhouse</h4>
+        <p id="product10-price">₹2,499</p>
+        <button onclick="addToCart('Mini Greenhouse', 2499)" id="product10-btn">Add to Cart</button>
       </div>
     </section>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p>© 2025 Kisan Setu | Empowering Farmers</p>
+    <p id="footer-text">© 2025 Kisan Setu | Empowering Farmers</p>
   </footer>
 
   <script>
+    const translations = {
+      en: {
+        title: 'Kisan Setu Marketplace',
+        backBtn: '← Back to Dashboard',
+        searchPlaceholder: 'Search products...',
+        filterOption: 'Filters + Sort',
+        priceLow: 'Price: Low to High',
+        priceHigh: 'Price: High to Low',
+        newest: 'Newest',
+        marketplaceBtn: 'Marketplace',
+        filtersTitle: 'Filters',
+        category: 'Category',
+        price: 'Price',
+        distance: 'Distance',
+        organic: 'Organic',
+        rating: 'Rating',
+        product1Name: 'Organic Fertilizer',
+        product1Price: '₹250 / 5kg',
+        product2Name: 'Hybrid Seeds',
+        product2Price: '₹120 / pack',
+        product3Name: 'Drip Irrigation Kit',
+        product3Price: '₹1,299',
+        product4Name: 'Tractor Rental',
+        product4Price: '₹499 / hour',
+        product5Name: 'Compost',
+        product5Price: '₹299 / bag',
+        product6Name: 'Fertilizer Sprayer',
+        product6Price: '₹899',
+        product7Name: 'Watering Can',
+        product7Price: '₹199',
+        product8Name: 'Natural Pesticide',
+        product8Price: '₹349 / litre',
+        product9Name: 'Soil Tester Kit',
+        product9Price: '₹599',
+        product10Name: 'Mini Greenhouse',
+        product10Price: '₹2,499',
+        addToCart: 'Add to Cart',
+        footerText: '© 2025 Kisan Setu | Empowering Farmers'
+      },
+      hi: {
+        title: 'किसान सेतु बाजार',
+        backBtn: '← डैशबोर्ड पर वापस',
+        searchPlaceholder: 'उत्पाद खोजें...',
+        filterOption: 'फिल्टर + सॉर्ट',
+        priceLow: 'कीमत: कम से ज्यादा',
+        priceHigh: 'कीमत: ज्यादा से कम',
+        newest: 'नवीनतम',
+        marketplaceBtn: 'बाजार',
+        filtersTitle: 'फिल्टर',
+        category: 'श्रेणी',
+        price: 'कीमत',
+        distance: 'दूरी',
+        organic: 'जैविक',
+        rating: 'रेटिंग',
+        product1Name: 'जैविक उर्वरक',
+        product1Price: '₹250 / 5 किलो',
+        product2Name: 'हाइब्रिड बीज',
+        product2Price: '₹120 / पैकेट',
+        product3Name: 'ड्रिप सिंचाई किट',
+        product3Price: '₹1,299',
+        product4Name: 'ट्रैक्टर किराया',
+        product4Price: '₹499 / घंटा',
+        product5Name: 'कंपोस्ट',
+        product5Price: '₹299 / बैग',
+        product6Name: 'उर्वरक स्प्रेयर',
+        product6Price: '₹899',
+        product7Name: 'पानी का डिब्बा',
+        product7Price: '₹199',
+        product8Name: 'प्राकृतिक कीटनाशक',
+        product8Price: '₹349 / लीटर',
+        product9Name: 'मिट्टी परीक्षण किट',
+        product9Price: '₹599',
+        product10Name: 'मिनी ग्रीनहाउस',
+        product10Price: '₹2,499',
+        addToCart: 'कार्ट में डालें',
+        footerText: '© 2025 किसान सेतु | किसानों को सशक्त बनाना'
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById('language').value;
+      const t = translations[lang];
+      
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('back-btn').textContent = t.backBtn;
+      document.getElementById('search-bar').placeholder = t.searchPlaceholder;
+      document.getElementById('filter-option').textContent = t.filterOption;
+      document.getElementById('price-low').textContent = t.priceLow;
+      document.getElementById('price-high').textContent = t.priceHigh;
+      document.getElementById('newest').textContent = t.newest;
+      document.getElementById('marketplace-btn').textContent = t.marketplaceBtn;
+      document.getElementById('filters-title').textContent = t.filtersTitle;
+      document.getElementById('category').textContent = t.category;
+      document.getElementById('price').textContent = t.price;
+      document.getElementById('distance').textContent = t.distance;
+      document.getElementById('organic').textContent = t.organic;
+      document.getElementById('rating').textContent = t.rating;
+      
+      // Update product names and prices
+      document.getElementById('product1-name').textContent = t.product1Name;
+      document.getElementById('product1-price').textContent = t.product1Price;
+      document.getElementById('product1-btn').textContent = t.addToCart;
+      
+      document.getElementById('product2-name').textContent = t.product2Name;
+      document.getElementById('product2-price').textContent = t.product2Price;
+      document.getElementById('product2-btn').textContent = t.addToCart;
+      
+      document.getElementById('product3-name').textContent = t.product3Name;
+      document.getElementById('product3-price').textContent = t.product3Price;
+      document.getElementById('product3-btn').textContent = t.addToCart;
+      
+      document.getElementById('product4-name').textContent = t.product4Name;
+      document.getElementById('product4-price').textContent = t.product4Price;
+      document.getElementById('product4-btn').textContent = t.addToCart;
+      
+      document.getElementById('product5-name').textContent = t.product5Name;
+      document.getElementById('product5-price').textContent = t.product5Price;
+      document.getElementById('product5-btn').textContent = t.addToCart;
+      
+      document.getElementById('product6-name').textContent = t.product6Name;
+      document.getElementById('product6-price').textContent = t.product6Price;
+      document.getElementById('product6-btn').textContent = t.addToCart;
+      
+      document.getElementById('product7-name').textContent = t.product7Name;
+      document.getElementById('product7-price').textContent = t.product7Price;
+      document.getElementById('product7-btn').textContent = t.addToCart;
+      
+      document.getElementById('product8-name').textContent = t.product8Name;
+      document.getElementById('product8-price').textContent = t.product8Price;
+      document.getElementById('product8-btn').textContent = t.addToCart;
+      
+      document.getElementById('product9-name').textContent = t.product9Name;
+      document.getElementById('product9-price').textContent = t.product9Price;
+      document.getElementById('product9-btn').textContent = t.addToCart;
+      
+      document.getElementById('product10-name').textContent = t.product10Name;
+      document.getElementById('product10-price').textContent = t.product10Price;
+      document.getElementById('product10-btn').textContent = t.addToCart;
+      
+      document.getElementById('footer-text').textContent = t.footerText;
+      
+      // Save language preference
+      localStorage.setItem('marketplaceLanguage', lang);
+    }
+
     function goBack() {
       window.location.href = 'farmer-dashboard.html';
     }
 
     function addToCart(productName, price) {
-      // Get existing cart or create new one
-      let cart = JSON.parse(localStorage.getItem('kisanSetuCart') || '[]');
+      const lang = document.getElementById('language').value;
+      const confirmMsg = lang === 'hi' ? 
+        `${productName} कार्ट में जोड़ा गया! ₹${price}` : 
+        `${productName} added to cart! ₹${price}`;
       
-      // Check if product already exists in cart
+      let cart = JSON.parse(localStorage.getItem('kisanSetuCart') || '[]');
       const existingItem = cart.find(item => item.name === productName);
       
       if (existingItem) {
@@ -368,29 +519,24 @@
         });
       }
       
-      // Save updated cart
       localStorage.setItem('kisanSetuCart', JSON.stringify(cart));
-      
-      // Show confirmation
-      alert(`${productName} added to cart! ₹${price}`);
-      
-      // Update cart count if there's a cart counter on the page
+      alert(confirmMsg);
       updateCartCount();
     }
 
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('kisanSetuCart') || '[]');
       const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      
-      // Update cart count display if element exists
       const cartCountElement = document.getElementById('cart-count');
       if (cartCountElement) {
         cartCountElement.textContent = totalItems;
       }
     }
 
-    // Initialize cart count on page load
     document.addEventListener('DOMContentLoaded', function() {
+      const savedLang = localStorage.getItem('marketplaceLanguage') || 'en';
+      document.getElementById('language').value = savedLang;
+      changeLanguage();
       updateCartCount();
     });
   </script>

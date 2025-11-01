@@ -447,25 +447,25 @@
         <i class="fa-solid fa-coins"></i>
         <h3>इस महीने की कमाई</h3>
         <div class="value">₹1,25,000</div>
-        <div class="unit">रुपये</div>
+        <div class="unit" id="earnings-unit">रुपये</div>
       </div>
       <div class="kpi-box">
         <i class="fa-solid fa-droplet"></i>
         <h3>मिट्टी में नमी</h3>
         <div class="value">78%</div>
-        <div class="unit">अच्छी स्थिति</div>
+        <div class="unit" id="moisture-unit">अच्छी स्थिति</div>
       </div>
       <div class="kpi-box">
         <i class="fa-solid fa-seedling"></i>
         <h3>फसल की सेहत</h3>
         <div class="value">85%</div>
-        <div class="unit">बहुत अच्छी</div>
+        <div class="unit" id="crop-health-unit">बहुत अच्छी</div>
       </div>
       <div class="kpi-box">
         <i class="fa-solid fa-thermometer-half"></i>
         <h3>आज का तापमान</h3>
         <div class="value">28°C</div>
-        <div class="unit">सामान्य</div>
+        <div class="unit" id="temp-unit">सामान्य</div>
       </div>
     </div>
 
@@ -479,22 +479,22 @@
         <div class="task-item">
           <i class="fa-solid fa-wheat-awn"></i>
           <div class="task-text">
-            <div class="title">गेहूं की फसल</div>
-            <div class="desc">5 एकड़ में लगी है, 80% तैयार है</div>
+            <div class="title" id="wheat-crop">गेहूं की फसल</div>
+            <div class="desc" id="wheat-desc">5 एकड़ में लगी है, 80% तैयार है</div>
           </div>
         </div>
         <div class="task-item">
           <i class="fa-solid fa-corn"></i>
           <div class="task-text">
-            <div class="title">मक्का की फसल</div>
-            <div class="desc">3 एकड़ में लगी है, 60% तैयार है</div>
+            <div class="title" id="corn-crop">मक्का की फसल</div>
+            <div class="desc" id="corn-desc">3 एकड़ में लगी है, 60% तैयार है</div>
           </div>
         </div>
         <div class="task-item">
           <i class="fa-solid fa-carrot"></i>
           <div class="task-text">
-            <div class="title">सब्जी की फसल</div>
-            <div class="desc">2 एकड़ में लगी है, कटाई के लिए तैयार</div>
+            <div class="title" id="veg-crop">सब्जी की फसल</div>
+            <div class="desc" id="veg-desc">2 एकड़ में लगी है, कटाई के लिए तैयार</div>
           </div>
         </div>
       </div>
@@ -507,22 +507,22 @@
         <div class="task-item">
           <i class="fa-solid fa-tint"></i>
           <div class="task-text">
-            <div class="title">पानी देना</div>
-            <div class="desc">सुबह 6 बजे खेत में पानी दें</div>
+            <div class="title" id="water-task">पानी देना</div>
+            <div class="desc" id="water-desc">सुबह 6 बजे खेत में पानी दें</div>
           </div>
         </div>
         <div class="task-item">
           <i class="fa-solid fa-spray-can"></i>
           <div class="task-text">
-            <div class="title">दवा छिड़काव</div>
-            <div class="desc">शाम को कीटनाशक का छिड़काव करें</div>
+            <div class="title" id="spray-task">दवा छिड़काव</div>
+            <div class="desc" id="spray-desc">शाम को कीटनाशक का छिड़काव करें</div>
           </div>
         </div>
         <div class="task-item">
           <i class="fa-solid fa-truck"></i>
           <div class="task-text">
-            <div class="title">सब्जी बेचना</div>
-            <div class="desc">मंडी में सब्जी ले जाना है</div>
+            <div class="title" id="sell-task">सब्जी बेचना</div>
+            <div class="desc" id="sell-desc">मंडी में सब्जी ले जाना है</div>
           </div>
         </div>
       </div>
@@ -544,31 +544,6 @@
   <script>
     // Language translations
     const translations = {
-      hi: {
-        title: 'किसान सेतु | मेरा खेत डैशबोर्ड',
-        sidebarTitle: 'किसान सेतु',
-        menuHome: 'मुख्य पृष्ठ',
-        menuCrop: 'फसल स्वास्थ्य',
-        menuWeather: 'मौसम जानकारी',
-        menuMarket: 'बाजार भाव',
-        menuAdvisory: 'सलाह सेवा',
-        menuProfile: 'मेरी प्रोफाइल',
-        menuSettings: 'सेटिंग्स',
-        menuLogout: 'लॉग आउट',
-        farmText: 'मेरा खेत',
-        dateText: 'आज की तारीख',
-        alertText: 'अलर्ट',
-        welcomeTitle: '🙏 नमस्कार किसान भाई!',
-        welcomeDesc: 'आपके खेत की पूरी जानकारी यहाँ देखें',
-        earningsTitle: 'इस महीने की कमाई',
-        moistureTitle: 'मिट्टी में नमी',
-        cropHealthTitle: 'फसल की सेहत',
-        tempTitle: 'आज का तापमान',
-        cropInfoTitle: 'मेरी फसल की जानकारी',
-        tasksTitle: 'आज के काम',
-        alertMsg: 'महत्वपूर्ण सूचना: कल बारिश की संभावना है | गेहूं का भाव ₹2,100 प्रति क्विंटल',
-        footerMsg: 'किसान सेतु - आपकी खेती, हमारी तकनीक | सभी किसान भाइयों के लिए बनाया गया'
-      },
       en: {
         title: 'Kisan Setu | Farmer Dashboard',
         sidebarTitle: 'Kisan Setu',
@@ -586,13 +561,70 @@
         welcomeTitle: '🙏 Welcome Farmer!',
         welcomeDesc: 'View all your farm information here',
         earningsTitle: 'This Month\'s Earnings',
+        earningsUnit: 'Rupees',
         moistureTitle: 'Soil Moisture',
+        moistureUnit: 'Good Condition',
         cropHealthTitle: 'Crop Health',
+        cropHealthUnit: 'Very Good',
         tempTitle: 'Today\'s Temperature',
+        tempUnit: 'Normal',
         cropInfoTitle: 'My Crop Information',
         tasksTitle: 'Today\'s Tasks',
+        wheatCrop: 'Wheat Crop',
+        wheatDesc: 'Planted in 5 acres, 80% ready',
+        cornCrop: 'Corn Crop',
+        cornDesc: 'Planted in 3 acres, 60% ready',
+        vegCrop: 'Vegetable Crop',
+        vegDesc: 'Planted in 2 acres, ready for harvest',
+        waterTask: 'Watering',
+        waterDesc: 'Water the field at 6 AM',
+        sprayTask: 'Pesticide Spray',
+        sprayDesc: 'Spray pesticide in the evening',
+        sellTask: 'Sell Vegetables',
+        sellDesc: 'Take vegetables to market',
         alertMsg: 'Important Notice: Rain expected tomorrow | Wheat price ₹2,100 per quintal',
         footerMsg: 'Kisan Setu - Your Farming, Our Technology | Made for all farmer brothers'
+      },
+      hi: {
+        title: 'किसान सेतु | मेरा खेत डैशबोर्ड',
+        sidebarTitle: 'किसान सेतु',
+        menuHome: 'मुख्य पृष्ठ',
+        menuCrop: 'फसल स्वास्थ्य',
+        menuWeather: 'मौसम जानकारी',
+        menuMarket: 'बाजार भाव',
+        menuAdvisory: 'सलाह सेवा',
+        menuProfile: 'मेरी प्रोफाइल',
+        menuSettings: 'सेटिंग्स',
+        menuLogout: 'लॉग आउट',
+        farmText: 'मेरा खेत',
+        dateText: 'आज की तारीख',
+        alertText: 'अलर्ट',
+        welcomeTitle: '🙏 नमस्कार किसान भाई!',
+        welcomeDesc: 'आपके खेत की पूरी जानकारी यहाँ देखें',
+        earningsTitle: 'इस महीने की कमाई',
+        earningsUnit: 'रुपये',
+        moistureTitle: 'मिट्टी में नमी',
+        moistureUnit: 'अच्छी स्थिति',
+        cropHealthTitle: 'फसल की सेहत',
+        cropHealthUnit: 'बहुत अच्छी',
+        tempTitle: 'आज का तापमान',
+        tempUnit: 'सामान्य',
+        cropInfoTitle: 'मेरी फसल की जानकारी',
+        tasksTitle: 'आज के काम',
+        wheatCrop: 'गेहूं की फसल',
+        wheatDesc: '5 एकड़ में लगी है, 80% तैयार है',
+        cornCrop: 'मक्का की फसल',
+        cornDesc: '3 एकड़ में लगी है, 60% तैयार है',
+        vegCrop: 'सब्जी की फसल',
+        vegDesc: '2 एकड़ में लगी है, कटाई के लिए तैयार',
+        waterTask: 'पानी देना',
+        waterDesc: 'सुबह 6 बजे खेत में पानी दें',
+        sprayTask: 'दवा छिड़काव',
+        sprayDesc: 'शाम को कीटनाशक का छिड़काव करें',
+        sellTask: 'सब्जी बेचना',
+        sellDesc: 'मंडी में सब्जी ले जाना है',
+        alertMsg: 'महत्वपूर्ण सूचना: कल बारिश की संभावना है | गेहूं का भाव ₹2,100 प्रति क्विंटल',
+        footerMsg: 'किसान सेतु - आपकी खेती, हमारी तकनीक | सभी किसान भाइयों के लिए बनाया गया'
       }
     };
 
@@ -625,7 +657,7 @@
       document.getElementById('welcome-title').textContent = t.welcomeTitle;
       document.getElementById('welcome-desc').textContent = t.welcomeDesc;
       
-      // Update KPI titles
+      // Update KPI titles and units
       const kpiTitles = document.querySelectorAll('.kpi-box h3');
       if (kpiTitles.length >= 4) {
         kpiTitles[0].textContent = t.earningsTitle;
@@ -634,12 +666,53 @@
         kpiTitles[3].textContent = t.tempTitle;
       }
       
+      // Update KPI units
+      const earningsUnit = document.getElementById('earnings-unit');
+      const moistureUnit = document.getElementById('moisture-unit');
+      const cropHealthUnit = document.getElementById('crop-health-unit');
+      const tempUnit = document.getElementById('temp-unit');
+      
+      if (earningsUnit) earningsUnit.textContent = t.earningsUnit;
+      if (moistureUnit) moistureUnit.textContent = t.moistureUnit;
+      if (cropHealthUnit) cropHealthUnit.textContent = t.cropHealthUnit;
+      if (tempUnit) tempUnit.textContent = t.tempUnit;
+      
       // Update panel headers
       const panelHeaders = document.querySelectorAll('.panel-header h3');
       if (panelHeaders.length >= 2) {
         panelHeaders[0].textContent = t.cropInfoTitle;
         panelHeaders[1].textContent = t.tasksTitle;
       }
+      
+      // Update crop information
+      const wheatCrop = document.getElementById('wheat-crop');
+      const wheatDesc = document.getElementById('wheat-desc');
+      const cornCrop = document.getElementById('corn-crop');
+      const cornDesc = document.getElementById('corn-desc');
+      const vegCrop = document.getElementById('veg-crop');
+      const vegDesc = document.getElementById('veg-desc');
+      
+      if (wheatCrop) wheatCrop.textContent = t.wheatCrop;
+      if (wheatDesc) wheatDesc.textContent = t.wheatDesc;
+      if (cornCrop) cornCrop.textContent = t.cornCrop;
+      if (cornDesc) cornDesc.textContent = t.cornDesc;
+      if (vegCrop) vegCrop.textContent = t.vegCrop;
+      if (vegDesc) vegDesc.textContent = t.vegDesc;
+      
+      // Update tasks
+      const waterTask = document.getElementById('water-task');
+      const waterDesc = document.getElementById('water-desc');
+      const sprayTask = document.getElementById('spray-task');
+      const sprayDesc = document.getElementById('spray-desc');
+      const sellTask = document.getElementById('sell-task');
+      const sellDesc = document.getElementById('sell-desc');
+      
+      if (waterTask) waterTask.textContent = t.waterTask;
+      if (waterDesc) waterDesc.textContent = t.waterDesc;
+      if (sprayTask) sprayTask.textContent = t.sprayTask;
+      if (sprayDesc) sprayDesc.textContent = t.sprayDesc;
+      if (sellTask) sellTask.textContent = t.sellTask;
+      if (sellDesc) sellDesc.textContent = t.sellDesc;
       
       // Update alerts
       const alertsDiv = document.querySelector('.alerts');
