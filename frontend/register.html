@@ -37,7 +37,9 @@
       padding: 10px;
     }
 
+    /* Initially hidden for fade-in */
     .register-container {
+      opacity: 0;
       background-color: var(--white);
       width: 100%;
       max-width: 420px;
@@ -49,7 +51,7 @@
       position: relative;
       overflow: visible;
       z-index: 1;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: opacity 1s ease, transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     /*  Soft eco-glow behind the border edges */
@@ -60,12 +62,8 @@
       border-radius: 20px;
       background: linear-gradient(135deg,
           rgba(46, 125, 50, 0.25),
-          /* eco green */
           rgba(163, 230, 53, 0.25),
-          /* lime green */
-          rgba(255, 193, 7, 0.25)
-          /* sunlight yellow */
-        );
+          rgba(255, 193, 7, 0.25));
       z-index: -1;
       filter: blur(25px);
       opacity: 0.6;
@@ -73,7 +71,6 @@
       transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
     }
 
-    /*  Smoothly brighten & lift glow on hover */
     .register-container:hover::before {
       opacity: 1;
       filter: blur(35px);
@@ -84,8 +81,6 @@
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
-
-
 
     .language-selector {
       position: absolute;
@@ -372,6 +367,14 @@
   </div>
 
   <script>
+    // 🌿 Fade-in animation with 1s delay
+    window.addEventListener('load', () => {
+      const container = document.querySelector('.register-container');
+      setTimeout(() => {
+        container.style.opacity = '1';
+      }, 1000);
+    });
+
     function changeLanguage() {
       const lang = document.getElementById("language").value;
       const text = {
@@ -514,7 +517,6 @@
         return;
       }
 
-      // Store user data in localStorage
       const userData = {
         fullname,
         email,
@@ -525,16 +527,13 @@
         registrationDate: new Date().toISOString()
       };
 
-      // Get existing users or create new array
       let users = JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]');
 
-      // Check if username already exists
       if (users.find(user => user.username === username)) {
         alert('Username already exists. Please choose a different username.');
         return;
       }
 
-      // Add new user
       users.push(userData);
       localStorage.setItem('kisanSetuUsers', JSON.stringify(users));
 

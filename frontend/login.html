@@ -226,6 +226,10 @@
         padding: 1.5rem;
       }
     }
+    .login-container {
+  opacity: 0;
+}
+
   </style>
 </head>
 
@@ -275,6 +279,18 @@
   </div>
 
   <script>
+    // 🌿 Smooth fade-in animation for login container
+window.addEventListener('load', () => {
+  const container = document.querySelector('.login-container');
+  container.style.opacity = '0';
+  container.style.transition = 'opacity 0.8s ease';
+
+  // Delay for 1 second, then fade in
+  setTimeout(() => {
+    container.style.opacity = '1';
+  }, 1000);
+});
+
     // 🌐 Language switch
     function changeLanguage() {
       const lang = document.getElementById("language").value;
