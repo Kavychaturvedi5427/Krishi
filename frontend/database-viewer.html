@@ -323,8 +323,99 @@
       document.getElementById('stats-table').innerHTML = tableHTML;
     }
 
+    // Debug function to show localStorage contents
+    function debugStorage() {
+      console.log('=== KISAN SETU DATABASE DEBUG ===');
+      console.log('Users:', JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]'));
+      console.log('Login History:', JSON.parse(localStorage.getItem('kisanSetuLoginHistory') || '[]'));
+      console.log('User Stats:', JSON.parse(localStorage.getItem('kisanSetuUserStats') || '{}'));
+      console.log('Current User:', JSON.parse(localStorage.getItem('currentUser') || 'null'));
+    }
+
+    // Enhanced loadUsers function with better error handling
+    function loadUsers() {
+      try {
+        const users = JSON.parse(localStorage.getItem('kisanSetuUsers') || '[]');
+        console.log('Loading users:', users.length, 'users found');
+        
+        if (users.length === 0) {
+          document.getElementById('users-table').innerHTML = `
+            <div style="padding: 20px; text-align: center; color: #666;">
+              <p><strong>No registered users found.</strong></p>
+              <p>Users will appear here after they register through the registration page.</p>
+              <button onclick="debugStorage()" style="margin-top: 10px; padding: 5px 10px; background: #2E7D32; color: white; border: none; border-radius: 5px; cursor: pointer;">Debug Storage</button>
+            </div>
+          `;
+          return;
+        }
+
+        let tableHTML = `
+          <div style="margin-bottom: 10px; font-size: 0.9rem; color: #666;">
+            <strong>Total Registered Users: ${users.length}</strong>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>User Type</th>
+                <th>Registration Date</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        users.forEach((user, index) => {
+          const regDate = user.registrationDate ? new Date(user.registrationDate).toLocaleString() : 'N/A';
+          tableHTML += `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${user.fullname || 'N/A'}</td>
+              <td><strong>${user.username || 'N/A'}</strong></td>
+              <td>${user.email || 'N/A'}</td>
+              <td>${user.phone || 'N/A'}</td>
+              <td><span style="background: #2E7D32; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem;">${user.usertype || 'N/A'}</span></td>
+              <td>${regDate}</td>
+            </tr>
+          `;
+        });
+
+        tableHTML += '</tbody></table>';
+        document.getElementById('users-table').innerHTML = tableHTML;
+      } catch (error) {
+        console.error('Error loading users:', error);
+        document.getElementById('users-table').innerHTML = `
+          <div style="padding: 20px; text-align: center; color: #d32f2f;">
+            <p><strong>Error loading user data.</strong></p>
+            <p>Please check the console for details.</p>
+          </div>
+        `;
+      }
+    }
+
     // Load data when page loads
-    document.addEventListener('DOMContentLoaded', loadData);
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Database Viewer loaded');
+      loadData();
+      debugStorage();
+      
+      // Auto-refresh every 10 seconds to show new registrations
+      setInterval(function() {
+        console.log('Auto-refreshing data...');
+        loadData();
+      }, 10000);
+      
+      // Listen for storage changes (when new users register)
+      window.addEventListener('storage', function(e) {
+        console.log('Storage changed:', e.key);
+        if (e.key === 'kisanSetuUsers' || e.key === 'kisanSetuLoginHistory' || e.key === 'kisanSetuUserStats') {
+          loadData();
+        }
+      });
+    });
   </script>
 </body>
 </html>
