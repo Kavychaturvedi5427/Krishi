@@ -410,6 +410,41 @@ window.addEventListener('resize', makeResponsive);
       }
     }
 
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const strengthDiv = document.getElementById('password-strength');
+      const tipsDiv = document.getElementById('password-tips');
+      
+      if (password.length === 0) {
+        strengthDiv.style.display = 'none';
+        tipsDiv.style.display = 'none';
+        return;
+      }
+      
+      strengthDiv.style.display = 'block';
+      tipsDiv.style.display = 'block';
+      
+      let score = 0;
+      
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[a-z]/.test(password)) score++;
+      if (/\d/.test(password)) score++;
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+      
+      if (score < 3) {
+        strengthDiv.textContent = 'Weak password - Add more characters for better security';
+        strengthDiv.className = 'password-strength strength-weak';
+      } else if (score < 4) {
+        strengthDiv.textContent = 'Medium strength - Consider adding special characters';
+        strengthDiv.className = 'password-strength strength-medium';
+      } else {
+        strengthDiv.textContent = 'Strong password - Great for security!';
+        strengthDiv.className = 'password-strength strength-strong';
+        tipsDiv.style.display = 'none';
+      }
+    }
+
     function handleRegister() {
       const fullname = document.getElementById('fullname').value;
       const email = document.getElementById('email').value;
