@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>किसान सेतु | मेरा खेत डैशबोर्ड</title>
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     :root {
@@ -46,7 +44,7 @@
       display: flex;
       flex-direction: column;
       transition: all 0.3s ease;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar h2 {
@@ -54,7 +52,7 @@
       font-size: 1.4rem;
       margin-bottom: 25px;
       padding: 10px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
     }
 
@@ -79,9 +77,9 @@
     }
 
     .sidebar ul li:hover {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.2);
       transform: translateX(5px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     /* Main area */
@@ -101,7 +99,7 @@
       background: var(--white);
       padding: 15px 25px;
       border-bottom: 3px solid var(--secondary-orange);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .menu-toggle {
@@ -140,12 +138,12 @@
       border-radius: 25px;
       cursor: pointer;
       font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .topbar .right:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     /* Welcome Section */
@@ -181,19 +179,34 @@
       text-align: center;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
+      z-index: 1;
     }
 
+    /* ✨ Soft glow behind the borders */
     .kpi-box::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--secondary-orange));
+      inset: 0;
+      border-radius: 15px;
+      background: linear-gradient(135deg,
+          rgba(46, 204, 113, 0.25),
+          rgba(163, 230, 53, 0.25),
+          rgba(255, 193, 7, 0.25));
+      z-index: -1;
+      filter: blur(20px);
+      opacity: 0.5;
+      transform: scale(1.05);
+      transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    }
+
+    /* 🌿 Hover effect: brighten & lift glow */
+    .kpi-box:hover::before {
+      opacity: 0.95;
+      filter: blur(35px);
+      transform: scale(1.07);
     }
 
     .kpi-box:hover {
@@ -201,6 +214,7 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       border-color: var(--secondary-orange);
     }
+
 
     .kpi-box i {
       font-size: 2.5rem;
@@ -320,8 +334,15 @@
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
     }
 
     /* Footer note */
@@ -385,17 +406,18 @@
       .topbar .left {
         display: none;
       }
-      
+
       .welcome-section h1 {
         font-size: 1.4rem;
       }
-      
+
       .kpi-box {
         padding: 20px;
       }
     }
   </style>
 </head>
+
 <body>
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
@@ -404,9 +426,11 @@
       <ul>
         <li onclick="showOverview()"><i class="fa-solid fa-home"></i> <span id="menu-home">मुख्य पृष्ठ</span></li>
         <li onclick="showCropHealth()"><i class="fa-solid fa-leaf"></i> <span id="menu-crop">फसल स्वास्थ्य</span></li>
-        <li onclick="showWeather()"><i class="fa-solid fa-cloud-sun"></i> <span id="menu-weather">मौसम जानकारी</span></li>
+        <li onclick="showWeather()"><i class="fa-solid fa-cloud-sun"></i> <span id="menu-weather">मौसम जानकारी</span>
+        </li>
         <li onclick="showMarketplace()"><i class="fa-solid fa-store"></i> <span id="menu-market">बाजार भाव</span></li>
-        <li onclick="showAdvisory()"><i class="fa-solid fa-lightbulb"></i> <span id="menu-advisory">सलाह सेवा</span></li>
+        <li onclick="showAdvisory()"><i class="fa-solid fa-lightbulb"></i> <span id="menu-advisory">सलाह सेवा</span>
+        </li>
         <li onclick="showProfile()"><i class="fa-solid fa-user"></i> <span id="menu-profile">मेरी प्रोफाइल</span></li>
         <li onclick="showSettings()"><i class="fa-solid fa-gear"></i> <span id="menu-settings">सेटिंग्स</span></li>
         <li onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> <span id="menu-logout">लॉग आउट</span></li>
@@ -427,7 +451,8 @@
         <span><i class="fa-solid fa-bell"></i> <span id="alert-text">अलर्ट</span></span>
       </div>
       <div class="right">
-        <select id="language" onchange="changeLanguage()" style="margin-right: 10px; padding: 5px; border-radius: 5px; border: none;">
+        <select id="language" onchange="changeLanguage()"
+          style="margin-right: 10px; padding: 5px; border-radius: 5px; border: none;">
           <option value="hi">हिन्दी</option>
           <option value="en">English</option>
         </select>
@@ -632,13 +657,13 @@
     function changeLanguage() {
       const lang = document.getElementById('language').value;
       const t = translations[lang];
-      
+
       // Update page title
       document.title = t.title;
-      
+
       // Update sidebar
       document.querySelector('.sidebar h2').innerHTML = `<i class="fa-solid fa-tractor"></i> ${t.sidebarTitle}`;
-      
+
       // Update menu items
       document.getElementById('menu-home').textContent = t.menuHome;
       document.getElementById('menu-crop').textContent = t.menuCrop;
@@ -648,15 +673,15 @@
       document.getElementById('menu-profile').textContent = t.menuProfile;
       document.getElementById('menu-settings').textContent = t.menuSettings;
       document.getElementById('menu-logout').textContent = t.menuLogout;
-      
+
       // Update topbar
       document.getElementById('farm-text').textContent = t.farmText;
       document.getElementById('alert-text').textContent = t.alertText;
-      
+
       // Update welcome section
       document.getElementById('welcome-title').textContent = t.welcomeTitle;
       document.getElementById('welcome-desc').textContent = t.welcomeDesc;
-      
+
       // Update KPI titles and units
       const kpiTitles = document.querySelectorAll('.kpi-box h3');
       if (kpiTitles.length >= 4) {
@@ -665,25 +690,25 @@
         kpiTitles[2].textContent = t.cropHealthTitle;
         kpiTitles[3].textContent = t.tempTitle;
       }
-      
+
       // Update KPI units
       const earningsUnit = document.getElementById('earnings-unit');
       const moistureUnit = document.getElementById('moisture-unit');
       const cropHealthUnit = document.getElementById('crop-health-unit');
       const tempUnit = document.getElementById('temp-unit');
-      
+
       if (earningsUnit) earningsUnit.textContent = t.earningsUnit;
       if (moistureUnit) moistureUnit.textContent = t.moistureUnit;
       if (cropHealthUnit) cropHealthUnit.textContent = t.cropHealthUnit;
       if (tempUnit) tempUnit.textContent = t.tempUnit;
-      
+
       // Update panel headers
       const panelHeaders = document.querySelectorAll('.panel-header h3');
       if (panelHeaders.length >= 2) {
         panelHeaders[0].textContent = t.cropInfoTitle;
         panelHeaders[1].textContent = t.tasksTitle;
       }
-      
+
       // Update crop information
       const wheatCrop = document.getElementById('wheat-crop');
       const wheatDesc = document.getElementById('wheat-desc');
@@ -691,14 +716,14 @@
       const cornDesc = document.getElementById('corn-desc');
       const vegCrop = document.getElementById('veg-crop');
       const vegDesc = document.getElementById('veg-desc');
-      
+
       if (wheatCrop) wheatCrop.textContent = t.wheatCrop;
       if (wheatDesc) wheatDesc.textContent = t.wheatDesc;
       if (cornCrop) cornCrop.textContent = t.cornCrop;
       if (cornDesc) cornDesc.textContent = t.cornDesc;
       if (vegCrop) vegCrop.textContent = t.vegCrop;
       if (vegDesc) vegDesc.textContent = t.vegDesc;
-      
+
       // Update tasks
       const waterTask = document.getElementById('water-task');
       const waterDesc = document.getElementById('water-desc');
@@ -706,35 +731,35 @@
       const sprayDesc = document.getElementById('spray-desc');
       const sellTask = document.getElementById('sell-task');
       const sellDesc = document.getElementById('sell-desc');
-      
+
       if (waterTask) waterTask.textContent = t.waterTask;
       if (waterDesc) waterDesc.textContent = t.waterDesc;
       if (sprayTask) sprayTask.textContent = t.sprayTask;
       if (sprayDesc) sprayDesc.textContent = t.sprayDesc;
       if (sellTask) sellTask.textContent = t.sellTask;
       if (sellDesc) sellDesc.textContent = t.sellDesc;
-      
+
       // Update alerts
       const alertsDiv = document.querySelector('.alerts');
       if (alertsDiv) {
         alertsDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>${t.alertMsg}</strong>`;
       }
-      
+
       // Update footer
       const footerDiv = document.querySelector('.note');
       if (footerDiv) {
         footerDiv.innerHTML = `<i class="fa-solid fa-heart" style="color: var(--red);"></i> ${t.footerMsg}`;
       }
-      
+
       // Save language preference
       localStorage.setItem('kisanSetuLanguage', lang);
-      
+
       // Update date with new language
       updateCurrentDate();
     }
 
     // Load user data on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
         const userData = JSON.parse(currentUser);
@@ -744,12 +769,12 @@
       } else {
         window.location.href = 'login.html';
       }
-      
+
       // Load saved language preference
       const savedLang = localStorage.getItem('kisanSetuLanguage') || 'hi';
       document.getElementById('language').value = savedLang;
       changeLanguage();
-      
+
       // Update current date
       updateCurrentDate();
     });
@@ -758,16 +783,16 @@
       const today = new Date();
       const lang = document.getElementById('language').value || 'hi';
       const locale = lang === 'hi' ? 'hi-IN' : 'en-US';
-      
-      const options = { 
-        year: 'numeric', 
-        month: 'long', 
+
+      const options = {
+        year: 'numeric',
+        month: 'long',
         day: 'numeric',
         weekday: 'long'
       };
-      
+
       const dateStr = today.toLocaleDateString(locale, options);
-      
+
       // Update date in topbar
       const dateElement = document.getElementById('date-text');
       if (dateElement) {
@@ -816,9 +841,10 @@
     }
 
     // Auto-refresh data every 5 minutes
-    setInterval(function() {
+    setInterval(function () {
       updateCurrentDate();
     }, 300000);
   </script>
 </body>
+
 </html>
