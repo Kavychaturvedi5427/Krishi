@@ -27,7 +27,7 @@ async def startup_event():
 async def shutdown_event():
     await close_mongo_connection()
 
-app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(farmers.router, prefix="/api/farmers", tags=["Farmers"])
 app.include_router(marketplace.router, prefix="/api/marketplace", tags=["Marketplace"])
 app.include_router(advisory.router, prefix="/api/advisory", tags=["Advisory"])
@@ -41,11 +41,12 @@ async def root():
         "version": "1.0.0",
         "status": "healthy",
         "endpoints": {
-            "auth": "/api/auth",
+            "auth": "/auth",
             "farmers": "/api/farmers", 
             "marketplace": "/api/marketplace",
             "advisory": "/api/advisory",
-            "admin": "/api/admin"
+            "admin": "/api/admin",
+            "location": "/api/location"
         }
     }
 

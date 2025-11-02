@@ -1,29 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLocationContext } from '../../contexts/LocationContext';
-import { MapPin, X, Check } from 'lucide-react';
+import { MapPin, X, Check, Navigation } from 'lucide-react';
 
 const LocationService = ({ onLocationUpdate }) => {
   const { language } = useAuth();
   const { location, getCurrentLocation, loading } = useLocationContext();
   const [showPrompt, setShowPrompt] = useState(false);
+  const [useGPS, setUseGPS] = useState(true);
 
   useEffect(() => {
     const locationEnabled = localStorage.getItem('kisanSetuLocationEnabled');
     if (!locationEnabled && !location) {
       setTimeout(() => setShowPrompt(true), 2000);
-    } else if (locationEnabled === 'true' && !location) {
-      getCurrentLocation();
     }
   }, [location]);
 
 
 
-  const handleEnable = async () => {
+  const handleEnableGPS = async () => {
     localStorage.setItem('kisanSetuLocationEnabled', 'true');
     setShowPrompt(false);
     const newLocation = await getCurrentLocation();
     onLocationUpdate?.(newLocation);
+  };
+
+  const handleManualSelect = () => {
+    localStorage.setItem('kisanSetuLocationEnabled', 'manual');
+    setShowPrompt(false);
+    setUseGPS(false);
   };
 
   const handleDeny = () => {
@@ -34,33 +39,35 @@ const LocationService = ({ onLocationUpdate }) => {
   const translations = {
     en: {
       title: 'Enable Location Services',
-      description: 'Get personalized weather, nearby farmers/consumers, and local market prices based on your location.',
+      description: 'Get personalized weather, nearby farmers/consumers, and local market prices based on your exact location.',
       benefits: [
-        '🌤️ Local weather updates',
+        '📍 Accurate GPS location detection',
+        '🌤️ Local weather for your area',
         '👥 Find nearby users within 50km', 
         '💰 Regional market prices',
-        '🚚 Accurate delivery estimates',
-        '🏪 Local farmer products',
-        '📍 State-specific crop info'
+        '🚚 Precise delivery estimates',
+        '🏪 Local farmer products'
       ],
-      enable: 'Enable Location',
-      deny: 'Maybe Later',
-      detecting: 'Detecting location...'
+      enableGPS: 'Use My Location (GPS)',
+      selectManual: 'Choose Manually',
+      deny: 'Skip',
+      detecting: 'Getting your location...'
     },
     hi: {
       title: 'स्थान सेवा सक्षम करें',
-      description: 'अपने स्थान के आधार पर व्यक्तिगत मौसम, आस-पास के किसान/उपभोक्ता, और स्थानीय बाजार भाव प्राप्त करें।',
+      description: 'अपने सही स्थान के आधार पर व्यक्तिगत मौसम, आस-पास के किसान/उपभोक्ता, और स्थानीय बाजार भाव प्राप्त करें।',
       benefits: [
-        '🌤️ स्थानीय मौसम अपडेट',
+        '📍 सटीक GPS स्थान पहचान',
+        '🌤️ आपके क्षेत्र का मौसम',
         '👥 50 किमी के भीतर उपयोगकर्ता खोजें',
         '💰 क्षेत्रीय बाजार भाव', 
-        '🚚 सटीक डिलीवरी अनुमान',
-        '🏪 स्थानीय किसान उत्पाद',
-        '📍 राज्य-विशिष्ट फसल जानकारी'
+        '🚚 सही डिलीवरी अनुमान',
+        '🏪 स्थानीय किसान उत्पाद'
       ],
-      enable: 'स्थान सक्षम करें',
-      deny: 'बाद में',
-      detecting: 'स्थान खोज रहे हैं...'
+      enableGPS: 'मेरा स्थान उपयोग करें (GPS)',
+      selectManual: 'मैनुअल चुनें',
+      deny: 'छोड़ें',
+      detecting: 'आपका स्थान पता कर रहे हैं...'
     }
   };
 
@@ -94,18 +101,25 @@ const LocationService = ({ onLocationUpdate }) => {
             <p className="text-sm text-gray-600">{t.detecting}</p>
           </div>
         ) : (
-          <div className="flex gap-3">
+          <div className="space-y-3">
             <button
-              onClick={handleDeny}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              onClick={handleEnableGPS}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
-              {t.deny}
+              <Navigation className="w-4 h-4" />
+              {t.enableGPS}
             </button>
             <button
-              onClick={handleEnable}
-              className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={handleManualSelect}
+              className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              {t.enable}
+              {t.selectManual}
+            </button>
+            <button
+              onClick={handleDeny}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              {t.deny}
             </button>
           </div>
         )}

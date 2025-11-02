@@ -34,6 +34,9 @@ const LocationSelector = ({ isOpen, onClose }) => {
 
   const handleConfirm = () => {
     if (selectedCity) {
+      // Clear old data first
+      localStorage.removeItem('kisanSetuLocation');
+      
       const locationData = {
         latitude: selectedCity.lat,
         longitude: selectedCity.lng,
@@ -43,7 +46,9 @@ const LocationSelector = ({ isOpen, onClose }) => {
         pincode: selectedCity.pincode,
         district: selectedCity.state
       };
+      
       updateLocation(locationData);
+      localStorage.setItem('kisanSetuLocationEnabled', 'true');
       onClose();
     }
   };

@@ -2,14 +2,22 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import LocationBanner from '../components/common/LocationBanner';
-import LocationService from '../components/common/LocationService';
+import LocationPrompt from '../components/common/LocationPrompt';
 
 const Landing = () => {
   const { language, setLanguage } = useAuth();
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setPageLoaded(true), 1000);
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+      // Show location prompt if not enabled
+      const locationEnabled = localStorage.getItem('kisanSetuLocationEnabled');
+      if (!locationEnabled) {
+        setTimeout(() => setShowLocationPrompt(true), 1500);
+      }
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -209,8 +217,14 @@ const Landing = () => {
         </div>
       </footer>
       
-      {/* Location Service */}
-      <LocationService />
+      {/* Location Prompt */}
+      <LocationPrompt 
+        isOpen={showLocationPrompt} 
+        onClose={() => {
+          setShowLocationPrompt(false);
+          localStorage.setItem('kisanSetuLocationEnabled', 'true');
+        }} 
+      />
     </div>
   );
 };

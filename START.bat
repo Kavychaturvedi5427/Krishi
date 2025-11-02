@@ -1,4 +1,4 @@
- @echo off
+@echo off
 echo 🌾 Kisan Setu - Starting Application...
 echo.
 

@@ -45,6 +45,9 @@ const LocationBanner = () => {
                 <p className="text-xs opacity-90">
                   {language === 'hi' ? `जिला: ${location.district || location.city} | पिन: ${location.pincode || '000000'}` : `District: ${location.district || location.city} | PIN: ${location.pincode || '000000'}`}
                 </p>
+                <p className="text-xs opacity-75 mt-1">
+                  {language === 'hi' ? 'स्थान बदलने के लिए एडिट बटन दबाएं' : 'Click edit button to change location'}
+                </p>
               </div>
             ) : (
               <p className="text-sm sm:text-base">{t.enableLocation}</p>
@@ -61,11 +64,11 @@ const LocationBanner = () => {
             <Edit className="w-4 h-4" />
           </button>
           <button
-            onClick={getCurrentLocation}
-            disabled={loading}
+            onClick={() => setShowSelector(true)}
             className="p-2 hover:bg-white/20 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+            title={language === 'hi' ? 'स्थान बदलें' : 'Change Location'}
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className="w-4 h-4" />
           </button>
           <button
             onClick={() => setDismissed(true)}

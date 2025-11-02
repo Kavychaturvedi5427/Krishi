@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY || '3a680fa13cc9c4be860368ea425c7667';
 
 const api = axios.create({
@@ -48,7 +48,19 @@ export const authAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
-  register: (userData) => api.post('/auth/register', userData),
+  register: async (userData) => {
+    try {
+      console.log('Sending registration request:', userData);
+      const response = await api.post('/auth/register', userData, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      console.log('Registration response:', response);
+      return response;
+    } catch (error) {
+      console.error('Registration API error:', error);
+      throw error;
+    }
+  },
   getProfile: () => api.get('/auth/profile'),
 };
 

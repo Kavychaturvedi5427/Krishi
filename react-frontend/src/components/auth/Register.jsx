@@ -91,13 +91,39 @@ const Register = () => {
   };
 
   const onSubmit = async (data) => {
+    // Client-side validation
+    if (!data.fullname?.trim()) {
+      alert('Please enter your full name');
+      return;
+    }
+    
+    if (!data.email?.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+    
+    if (!data.phone?.trim()) {
+      alert('Please enter your phone number');
+      return;
+    }
+    
+    if (!data.username?.trim()) {
+      alert('Please choose a username');
+      return;
+    }
+    
+    if (!data.usertype) {
+      alert('Please select user type');
+      return;
+    }
+
     if (data.password !== data.confirmPassword) {
       alert('Passwords do not match');
       return;
     }
 
     if (data.password.length < 8) {
-      alert('Password must be at least 8 characters long for better security');
+      alert('Password must be at least 8 characters long');
       return;
     }
 
@@ -109,31 +135,44 @@ const Register = () => {
     setIsLoading(true);
     try {
       const userData = {
-        username: data.username,
-        email: data.email,
-        full_name: data.fullname,
+        username: data.username.trim(),
+        email: data.email.trim().toLowerCase(),
+        full_name: data.fullname.trim(),
         user_type: data.usertype,
-        password: data.password
+        password: data.password,
+        phone: data.phone.trim()
       };
 
+      console.log('Sending registration data:', userData);
       const response = await authAPI.register(userData);
+      console.log('Registration response:', response);
       
-      // Show success message
-      alert(`Registration successful! Welcome ${data.fullname}! Please login with your credentials.`);
-      
-      // Navigate to login page
-      navigate('/login');
+      if (response.data?.success) {
+        alert(`🎉 Registration successful! Welcome ${data.fullname}! Please login with your credentials.`);
+        navigate('/login');
+      } else {
+        throw new Error('Registration failed - no success response');
+      }
     } catch (error) {
       console.error('Registration error:', error);
+      
       let errorMessage = 'Registration failed. Please try again.';
       
       if (error.response?.status === 400) {
-        errorMessage = error.response.data?.detail || 'Username or email already exists. Please choose different ones.';
+        errorMessage = error.response.data?.detail || 'Username or email already exists.';
+      } else if (error.response?.status === 422) {
+        errorMessage = 'Please check all fields are filled correctly.';
+      } else if (error.response?.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
       } else if (error.response?.data?.detail) {
         errorMessage = error.response.data.detail;
+      } else if (error.code === 'ERR_NETWORK') {
+        errorMessage = 'Cannot connect to server. Please check if the backend is running.';
+      } else if (error.message) {
+        errorMessage = error.message;
       }
       
-      alert(errorMessage);
+      alert(`❌ ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
@@ -148,39 +187,39 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-100 flex items-center justify-center p-4 transition-all duration-700 ease-in-out">
-      <div className="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl relative overflow-visible transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+    <div className="min-h-screen bg-green-100 flex items-center justify-center mobile-px p-2 sm:p-4 transition-all duration-700 ease-in-out safe-area-top">
+      <div className="bg-white w-full max-w-md mobile-card p-4 sm:p-8 rounded-3xl shadow-2xl relative overflow-visible transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
         {/* Glow Effect */}
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-green-200/40 via-yellow-200/40 to-orange-200/40 blur-xl scale-110 opacity-60 transition-all duration-500 hover:opacity-100 hover:blur-2xl"></div>
         
         {/* Language Selector */}
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10">
           <select 
             value={language} 
             onChange={(e) => setLanguage(e.target.value)}
-            className="px-2 py-1 rounded border border-gray-300 bg-white text-green-600 font-semibold cursor-pointer text-xs"
+            className="px-2 py-1 rounded border border-gray-300 bg-white text-green-600 font-semibold cursor-pointer text-xs min-h-[44px]"
           >
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
+            <option value="en">EN</option>
+            <option value="hi">हिं</option>
           </select>
         </div>
 
         <div className="relative z-10">
           {/* Logo */}
-          <div className="text-center mb-4">
-            <img src="/kisansetu.png" alt="Kisan Setu Logo" className="w-20 h-20 mx-auto mb-3 rounded-2xl object-contain" />
-            <div className="text-lg font-bold text-green-600 mb-1 tracking-wide">{t.welcome}</div>
-            <div className="text-orange-500 text-xs font-semibold mb-3">{t.tagline}</div>
-            <h2 className="text-green-600 font-bold text-base mb-4 tracking-wide">{t.register}</h2>
+          <div className="text-center mb-3 sm:mb-4">
+            <img src="/kisansetu.png" alt="Kisan Setu Logo" className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 sm:mb-3 rounded-2xl object-contain" />
+            <div className="text-base sm:text-lg font-bold text-green-600 mb-1 tracking-wide">{t.welcome}</div>
+            <div className="text-orange-500 text-xs sm:text-sm font-semibold mb-2 sm:mb-3">{t.tagline}</div>
+            <h2 className="text-green-600 font-bold text-sm sm:text-base mb-3 sm:mb-4 tracking-wide">{t.register}</h2>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 sm:space-y-3">
             <div className="text-left">
               <label className="block text-xs text-gray-600 mb-1">{t.fullname}</label>
               <input
                 {...register('fullname', { required: 'Full name is required' })}
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
                 placeholder="Enter your full name"
               />
               {errors.fullname && (
@@ -199,7 +238,7 @@ const Register = () => {
                   }
                 })}
                 type="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
                 placeholder="Enter your email"
               />
               {errors.email && (
@@ -210,10 +249,19 @@ const Register = () => {
             <div className="text-left">
               <label className="block text-xs text-gray-600 mb-1">{t.phone}</label>
               <input
-                {...register('phone', { required: 'Phone number is required' })}
+                {...register('phone', { 
+                  required: 'Phone number is required',
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: 'Please enter a valid 10-digit phone number'
+                  }
+                })}
                 type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
-                placeholder="Enter your phone number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength="10"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
+                placeholder="Enter 10-digit phone number"
               />
               {errors.phone && (
                 <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
@@ -242,7 +290,7 @@ const Register = () => {
               <input
                 {...register('username', { required: 'Username is required' })}
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
                 placeholder="Choose a username"
               />
               {errors.username && (
@@ -261,7 +309,7 @@ const Register = () => {
                   }
                 })}
                 type={showPassword ? 'text' : 'password'}
-                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
+                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
                 placeholder="Create a password"
               />
               <button
@@ -294,7 +342,7 @@ const Register = () => {
                   validate: value => value === password || 'Passwords do not match'
                 })}
                 type={showConfirmPassword ? 'text' : 'password'}
-                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200"
+                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-200 text-base"
                 placeholder="Confirm your password"
               />
               <button
@@ -309,13 +357,13 @@ const Register = () => {
               )}
             </div>
 
-            <div className="flex items-start text-xs text-gray-600 mb-4">
+            <div className="flex items-start text-xs text-gray-600 mb-3 sm:mb-4">
               <input 
                 {...register('terms', { required: 'Please accept the terms' })}
                 type="checkbox" 
-                className="mr-2 mt-1" 
+                className="mr-2 mt-1 min-w-[16px] min-h-[16px]" 
               />
-              <label className="text-left">{t.terms}</label>
+              <label className="text-left cursor-pointer">{t.terms}</label>
             </div>
             {errors.terms && (
               <p className="text-red-500 text-xs mt-1">{errors.terms.message}</p>
@@ -324,20 +372,25 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-green-600 text-white py-3 rounded-xl text-base font-medium hover:bg-green-700 transition-colors duration-200 disabled:opacity-50"
+              className="w-full bg-green-600 text-white py-3 sm:py-4 rounded-xl text-sm sm:text-base font-medium hover:bg-green-700 transition-colors duration-200 disabled:opacity-50 min-h-[44px] flex items-center justify-center"
             >
-              {isLoading ? 'Creating Account...' : t.registerBtn}
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Creating Account...</span>
+                </div>
+              ) : t.registerBtn}
             </button>
           </form>
 
-          <div className="mt-4 text-center space-y-2">
-            <Link to="/login" className="block text-orange-500 text-sm hover:text-yellow-500">{t.login}</Link>
+          <div className="mt-3 sm:mt-4 text-center space-y-2">
+            <Link to="/login" className="block text-orange-500 text-sm hover:text-yellow-500 min-h-[44px] flex items-center justify-center">{t.login}</Link>
             <div className="text-xs text-gray-500">
               After registration, use your credentials to login
             </div>
           </div>
 
-          <footer className="text-center text-xs text-gray-600 mt-4">
+          <footer className="text-center text-xs text-gray-600 mt-3 sm:mt-4">
             {t.footer}
           </footer>
         </div>
