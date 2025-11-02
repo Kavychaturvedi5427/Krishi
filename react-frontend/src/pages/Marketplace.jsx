@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 const Marketplace = () => {
   const { language, setLanguage } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('name');
   const [cart, setCart] = useState([]);
   const [pageLoaded, setPageLoaded] = useState(false);
 
@@ -61,30 +59,29 @@ const Marketplace = () => {
   const t = translations[language];
 
   const products = [
-    { id: 1, name: 'Organic Fertilizer', nameHi: 'जैविक खाद', price: '₹500', image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop' },
-    { id: 2, name: 'Seeds Pack', nameHi: 'बीज पैक', price: '₹200', image: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=400&h=300&fit=crop' },
-    { id: 3, name: 'Drip Irrigation Kit', nameHi: 'ड्रिप सिंचाई किट', price: '₹2500', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop' },
-    { id: 4, name: 'Soil Tester Kit', nameHi: 'मिट्टी परीक्षण किट', price: '₹800', image: 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1deaa?w=400&h=300&fit=crop' },
-    { id: 5, name: 'Watering Can', nameHi: 'पानी का डिब्बा', price: '₹150', image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=400&h=300&fit=crop' },
-    { id: 6, name: 'Compost Bag', nameHi: 'कंपोस्ट बैग', price: '₹300', image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?w=400&h=300&fit=crop' },
-    { id: 7, name: 'Mini Greenhouse', nameHi: 'मिनी ग्रीनहाउस', price: '₹5000', image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop' },
-    { id: 8, name: 'Natural Pesticides', nameHi: 'प्राकृतिक कीटनाशक', price: '₹400', image: 'https://images.unsplash.com/photo-1574263867128-a3d5c1b1deaa?w=400&h=300&fit=crop' },
-    { id: 9, name: 'Tractor Rental', nameHi: 'ट्रैक्टर किराया', price: '₹1500/day', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&h=300&fit=crop' }
+    { id: 1, name: 'Organic Fertilizer', nameHi: 'जैविक खाद', price: '₹500', image: 'fertilizer.jpg' },
+    { id: 2, name: 'Seeds Pack', nameHi: 'बीज पैक', price: '₹200', image: 'seeds.jpg' },
+    { id: 3, name: 'Drip Irrigation Kit', nameHi: 'ड्रिप सिंचाई किट', price: '₹2500', image: 'dripirrigation.jpg' },
+    { id: 4, name: 'Soil Tester Kit', nameHi: 'मिट्टी परीक्षण किट', price: '₹800', image: 'soiltesterkit.jpg' },
+    { id: 5, name: 'Watering Can', nameHi: 'पानी का डिब्बा', price: '₹150', image: 'wateringcan.jpg' },
+    { id: 6, name: 'Compost Bag', nameHi: 'कंपोस्ट बैग', price: '₹300', image: 'compostbag.jpg' },
+    { id: 7, name: 'Mini Greenhouse', nameHi: 'मिनी ग्रीनहाउस', price: '₹5000', image: 'minigreenhouse.jpg' },
+    { id: 8, name: 'Natural Pesticides', nameHi: 'प्राकृतिक कीटनाशक', price: '₹400', image: 'naturalpesticides.jpg' },
+    { id: 9, name: 'Tractor Rental', nameHi: 'ट्रैक्टर किराया', price: '₹1500/day', image: 'tractorrental.jpg' }
   ];
-
-
-
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.nameHi.includes(searchTerm);
-    return matchesSearch;
+    const search = searchTerm.toLowerCase();
+    return (
+      product.name.toLowerCase().includes(search) ||
+      product.nameHi.includes(searchTerm)
+    );
   });
 
   const addToCart = (productName, price) => {
     let cart = JSON.parse(localStorage.getItem('kisanSetuCart') || '[]');
     cart.push({ name: productName, price: price, addedAt: new Date().toISOString() });
     localStorage.setItem('kisanSetuCart', JSON.stringify(cart));
-    
+
     const message = language === 'hi' ? `${productName} कार्ट में जोड़ा गया!` : `${productName} added to cart!`;
     alert(message);
     updateCartCount();
@@ -98,7 +95,7 @@ const Marketplace = () => {
   if (!pageLoaded) {
     return (
       <div className="fixed inset-0 bg-gradient-to-r from-green-600 to-orange-500 flex items-center justify-center z-50">
-        <div className="w-12 h-12 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -106,7 +103,7 @@ const Marketplace = () => {
   return (
     <div className="min-h-screen bg-gray-50 transition-all duration-700 ease-in-out">
       {/* Header */}
-      <header className="bg-white border-b-3 border-green-600 shadow-lg">
+      <header className="bg-white border-b-4 border-green-600 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-4">
@@ -115,7 +112,7 @@ const Marketplace = () => {
               </div>
               <h1 className="text-2xl font-bold text-green-600 uppercase tracking-wide">{t.title}</h1>
             </div>
-            
+
             <div className="flex items-center gap-4 flex-wrap">
               <select
                 value={language}
@@ -125,14 +122,14 @@ const Marketplace = () => {
                 <option value="en">English</option>
                 <option value="hi">हिन्दी</option>
               </select>
-              
+
               <button
                 onClick={() => navigate('/dashboard')}
                 className="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-600 transition-colors"
               >
                 {t.backBtn}
               </button>
-              
+
               <input
                 type="text"
                 placeholder={t.searchPlaceholder}
@@ -140,14 +137,14 @@ const Marketplace = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="px-4 py-2 border-2 border-green-600 rounded-lg w-56 focus:outline-none focus:ring-2 focus:ring-green-300"
               />
-              
+
               <select className="px-2 py-2 border-2 border-yellow-400 rounded-lg">
                 <option>{t.filterOption}</option>
                 <option>{t.priceLow}</option>
                 <option>{t.priceHigh}</option>
                 <option>{t.newest}</option>
               </select>
-              
+
               <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-orange-500 transition-colors relative">
                 {t.marketplaceBtn}
                 {cart.length > 0 && (
@@ -180,18 +177,12 @@ const Marketplace = () => {
           {filteredProducts.map(product => (
             <div key={product.id} className="bg-white border border-gray-200 rounded-xl text-center p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <div className="w-full h-48 bg-gray-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                <img 
-                  src={product.image} 
+                <img
+                  src={`/${product.image}`}
                   alt={language === 'hi' ? product.nameHi : product.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
+                  onError={(e) => (e.target.src = '/placeholder.png')}
                 />
-                <div className="w-full h-full bg-green-100 rounded-lg flex items-center justify-center text-4xl" style={{display: 'none'}}>
-                  🌱
-                </div>
               </div>
               <h4 className="text-green-600 font-semibold text-lg mb-2">
                 {language === 'hi' ? product.nameHi : product.name}
@@ -209,7 +200,7 @@ const Marketplace = () => {
       </main>
 
       {/* Footer */}
-      <footer className="text-center bg-white p-4 border-t-3 border-green-600 mt-8">
+      <footer className="text-center bg-white p-4 border-t-4 border-green-600 mt-8">
         <p className="text-gray-600">{t.footerText}</p>
       </footer>
     </div>
