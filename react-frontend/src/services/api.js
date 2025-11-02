@@ -151,6 +151,7 @@ export const advisoryAPI = {
 export const adminAPI = {
   getStats: () => api.get('/admin/stats'),
   getUsers: (params) => api.get('/admin/users', { params }),
+  getAllUsers: () => api.get('/admin/all-users'),
 };
 
 // Location API
@@ -163,6 +164,14 @@ export const locationAPI = {
     api.post('/location/update-location', locationData),
   getUserStats: (userId) => 
     api.get(`/location/user-stats/${userId}`),
+};
+
+// Users API
+export const usersAPI = {
+  getAllUsers: () => api.get('/auth/users'),
+  getUserById: (id) => api.get(`/auth/users/${id}`),
+  updateUser: (id, data) => api.put(`/auth/users/${id}`, data),
+  deleteUser: (id) => api.delete(`/auth/users/${id}`),
 };
 
 export default api;

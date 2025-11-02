@@ -197,7 +197,7 @@ const Dashboard = () => {
     ? (language === 'hi' ? 'आस-पास के ग्राहक' : 'Nearby Consumers')
     : (language === 'hi' ? 'आस-पास के किसान' : 'Nearby Farmers');
 
-  const menuItems = [
+  const baseMenuItems = [
     { icon: Home, label: t.menuHome, action: () => {} },
     { icon: Leaf, label: t.menuCrop, action: () => navigate('/crop-health') },
     { icon: Users, label: nearbyLabel, action: () => navigate('/nearby') },
@@ -208,6 +208,13 @@ const Dashboard = () => {
     { icon: User, label: t.menuProfile, action: () => navigate('/profile') },
     { icon: Settings, label: t.menuSettings, action: () => alert('⚙️ सेटिंग्स: ऐप की सेटिंग्स बदलें - जल्दी आ रहा है!') },
   ];
+
+  // Add admin-only menu items
+  const adminMenuItems = user?.user_type === 'admin' ? [
+    { icon: Users, label: language === 'hi' ? 'सभी उपयोगकर्ता' : 'All Users', action: () => navigate('/users') },
+  ] : [];
+
+  const menuItems = [...baseMenuItems, ...adminMenuItems];
 
   const kpiData = [
     {

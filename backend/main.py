@@ -20,8 +20,11 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.on_event("startup")
 async def startup_event():
+    print("🌾 Starting Kisan Setu API...")
     await connect_to_mongo()
-    print("🌾 Kisan Setu API started successfully!")
+    print("✅ Kisan Setu API started successfully!")
+    print("🌐 Server running at: http://localhost:8001")
+    print("📚 API docs at: http://localhost:8001/docs")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -52,7 +55,14 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "service": "Kisan Setu API"}
+    db = get_database()
+    db_status = "connected" if hasattr(db, 'users') else "mock"
+    return {
+        "status": "healthy", 
+        "service": "Kisan Setu API",
+        "database": db_status,
+        "timestamp": datetime.utcnow().isoformat()
+    }
 
 if __name__ == "__main__":
     import uvicorn

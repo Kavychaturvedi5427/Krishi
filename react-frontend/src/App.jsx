@@ -13,6 +13,7 @@ import Advisory from './pages/Advisory';
 import Profile from './pages/Profile';
 import Admin from './pages/Admin';
 import CropHealth from './pages/CropHealth';
+import Users from './pages/Users';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -63,6 +64,7 @@ function AppRoutes() {
       <Route path="/advisory" element={<ProtectedRoute><Advisory /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+      <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
       
       {/* Catch all route */}
       <Route path="*" element={<Navigate to="/" />} />

@@ -147,11 +147,11 @@ const Register = () => {
       const response = await authAPI.register(userData);
       console.log('Registration response:', response);
       
-      if (response.data?.success) {
+      if (response.data && (response.data.success || response.data.message)) {
         alert(`🎉 Registration successful! Welcome ${data.fullname}! Please login with your credentials.`);
         navigate('/login');
       } else {
-        throw new Error('Registration failed - no success response');
+        throw new Error('Registration failed - invalid response');
       }
     } catch (error) {
       console.error('Registration error:', error);
