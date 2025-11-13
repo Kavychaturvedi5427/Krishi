@@ -1,4 +1,4 @@
-# 🌾 Krishi - My Hackathon Project
+# 🌾 Krishi - Hackathon Project
 
 Hey! This is our submission for the Smart City & Sustainability hackathon. We built an AI-powered platform to help farmers in India.
 
