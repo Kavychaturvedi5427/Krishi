@@ -2,7 +2,7 @@
 
 Hey! This is our submission for the Smart City & Sustainability hackathon. We built an AI-powered platform to help farmers in India.
 
-## 🚀 How to Run This Thing
+## 🚀 How to Run This thing
 
 ### What You Need
 - Python 3.8+ (I used 3.11)
