@@ -1,8 +1,8 @@
 # 🌾 Krishi - Hackathon Project
 
-Hey! This is our submission for the Smart City & Sustainability hackathon. We built an AI-powered platform to help farmers in India.
+Hello! As part of the Smart City & Sustainability Hackathon, we built an AI-based solution aimed at helping Indian farmers.
 
-## 🚀 How to Run This Thing
+## 🚀 How to Run This thing
 
 ### What You Need
 - Python 3.8+ (I used 3.11)
