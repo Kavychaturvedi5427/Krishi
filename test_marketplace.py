@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-"""
-Test script to verify marketplace functionality and image URLs
-"""
 
 import requests
 import json

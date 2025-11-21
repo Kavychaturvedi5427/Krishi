@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { farmersAPI, advisoryAPI } from '../../services/api';
 import MobileNav from '../common/MobileNav';
 import LocationService from '../common/LocationService';
+import AIAssistant from '../common/AIAssistant';
 import { 
   Home, Leaf, Cloud, Store, ShoppingCart, Users, Lightbulb, User, Settings, LogOut, Menu, MapPin, Brain
 } from 'lucide-react';
@@ -514,6 +515,9 @@ const Dashboard = () => {
       <div className="lg:hidden">
         <MobileNav />
       </div>
+      
+      {/* AI Assistant */}
+      <AIAssistant />
     </div>
   );
 };

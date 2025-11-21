@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { marketplaceAPI, cartUtils } from '../services/api';
 import MobileNav from '../components/common/MobileNav';
+import AIAssistant from '../components/common/AIAssistant';
 import { ArrowLeft, Search, ShoppingCart, Plus, Minus, Leaf, MapPin, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -368,6 +369,7 @@ const Marketplace = () => {
       </div>
 
       <MobileNav />
+      <AIAssistant />
     </div>
   );
 };
